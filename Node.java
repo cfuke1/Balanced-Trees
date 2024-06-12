@@ -1,21 +1,20 @@
 
 class Node {
-    int key, height;
+    String key;
+    int height;
     String foreignSaying;
     String englishSaying;
     String foreignExplanation;
     String englishExplanation;
     Node left, right;
 
-    Node(int d) {
-        /*
+    Node(String key, String foreignSaying, String englishSaying, String foreignExplanation, String englishExplanation) {
         this.foreignSaying = foreignSaying;
         this.englishSaying = englishSaying;
         this.foreignExplanation = foreignExplanation;
         this.englishExplanation = englishExplanation;
-         */
-        key = d;
-        height = 1;
+        this.key = key;
+        this.height = 1;
     }
 }
 //public class Node {

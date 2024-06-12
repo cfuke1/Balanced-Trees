@@ -44,14 +44,14 @@ class AVLTree {
     }
 
     // Insert a key in the tree
-    Node insert(Node node, int key) {
+    Node insert(Node node, String key, String foreignSaying, String englishSaying, String foreignExplanation, String englishExplanation) {
         if (node == null)
-            return new Node(key);
+            return new Node(key, foreignSaying, englishSaying, foreignExplanation, englishExplanation);
 
-        if (key < node.key)
-            node.left = insert(node.left, key);
-        else if (key > node.key)
-            node.right = insert(node.right, key);
+        if (key.compareTo(node.key) < 0)
+            node.left = insert(node.left, key, foreignSaying, englishSaying, foreignExplanation, englishExplanation);
+        else if (key.compareTo(node.key) > 0)
+            node.right = insert(node.right, key, foreignSaying, englishSaying, foreignExplanation, englishExplanation);
         else // Duplicate keys not allowed
             return node;
 
@@ -64,21 +64,21 @@ class AVLTree {
         // If the node is unbalanced, there are four possible cases
 
         // Left Left Case
-        if (balance > 1 && key < node.left.key)
+        if (balance > 1 && key.compareTo(node.left.key) < 0)
             return rightRotate(node);
 
         // Right Right Case
-        if (balance < -1 && key > node.right.key)
+        if (balance < -1 && key.compareTo(node.right.key) > 0)
             return leftRotate(node);
 
         // Left Right Case
-        if (balance > 1 && key > node.left.key) {
+        if (balance > 1 && key.compareTo(node.left.key) > 0) {
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
 
         // Right Left Case
-        if (balance < -1 && key < node.right.key) {
+        if (balance < -1 && key.compareTo(node.right.key) < 0) {
             node.right = rightRotate(node.right);
             return leftRotate(node);
         }
@@ -95,14 +95,18 @@ class AVLTree {
         }
     }
 
-    Node find(Node node, int key) {
+    Node find(Node node, String key) {
         // Base Cases: node is null or key is present at node
-        if (node == null || node.key == key) {
-            System.out.print(node.key);
+        if (node == null || node.key.equals(key)) {
+            if (node != null) {
+                System.out.println("Found: " + node.englishSaying);
+            } else {
+                System.out.println("Not Found");
+            }
             return node;
         }
         // Key is greater than node's key
-        if (node.key < key) {
+        if (node.key.compareTo(key) < 0) {
             return find(node.right, key);
         }
         // Key is smaller than node's key
@@ -110,7 +114,7 @@ class AVLTree {
     }
 
     // Wrapper function for search
-    Node find(int key) {
+    Node find(String key) {
         return find(root, key);
     }
 }
