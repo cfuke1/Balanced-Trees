@@ -1,7 +1,6 @@
 
 class Node {
     int height;
-    String foreignSaying;
     String englishSaying;
     String foreignExplanation;
     String englishExplanation;

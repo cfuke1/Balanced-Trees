@@ -88,6 +88,7 @@ class AVLTree {
         return node;
     }
 
+    // Displays all sayings in alphabetical order
     void inOrder(Node node) {
         if (node == null)
             return;
@@ -102,6 +103,11 @@ class AVLTree {
         inOrder(node.right);
     }
 
+    void inOrder() {
+        inOrder(root);
+    }
+
+    //Checks if a saying is in the database
     Node member(Node node, String key) {
         // Base Cases: node is null or key is present at node
         if (node == null || node.key.equals(key)) {
@@ -122,6 +128,7 @@ class AVLTree {
         return member(node.left, key);
     }
 
+    //Finds first alphabetical saying in the database
     void first(Node node) {
         if (node.left != null) {
             first(node.left);
@@ -130,6 +137,11 @@ class AVLTree {
         }
     }
 
+    void first() {
+        first(root);
+    }
+
+    //Finds first alphabetical saying in the database
     void last(Node node) {
         if (node.right != null) {
             last(node.right);
@@ -138,6 +150,11 @@ class AVLTree {
         }
     }
 
+    void last() {
+        last(root);
+    }
+
+    //Finds predecessor of a saying in the database
     Node predecessor(Node node, String key, Node[] predecessor) {
         if (node == null)
             return null;
@@ -162,12 +179,12 @@ class AVLTree {
         return predecessor(node.right, key, predecessor);
     }
 
-    // Wrapper method to search for a key and find its predecessor
     Node predecessor(String key) {
         Node[] predecessor = new Node[1];
         return predecessor(root, key, predecessor);
     }
 
+    //Finds predecessor of a saying in the database
     Node successor(Node node, String key, Node[] successor) {
         if (node == null)
             return null;
@@ -192,12 +209,12 @@ class AVLTree {
         return successor(node.right, key, successor);
     }
 
-    // Wrapper method to search for a key and find its predecessor
     Node successor(String key) {
         Node[] successor = new Node[1];
         return successor(root, key, successor);
     }
 
+    //Displays all Hawaiian sayings that contain a certain word
     void meHua(Node node, String key) {
         if (node == null) {
             return;
@@ -220,6 +237,7 @@ class AVLTree {
         meHua(root, key);
     }
 
+    //Displays all English translations that contain a certain word
     void withWord(Node node, String key) {
         if (node == null) {
             return;
@@ -241,7 +259,5 @@ class AVLTree {
     void withWord(String key) {
         withWord(root, key);
     }
-
-
 }
 
