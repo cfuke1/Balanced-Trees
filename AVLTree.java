@@ -1,3 +1,4 @@
+import java.util.List;
 class AVLTree {
     Node root;
 
@@ -44,14 +45,14 @@ class AVLTree {
     }
 
     // Insert a key in the tree
-    Node insert(Node node, String key, String foreignSaying, String englishSaying, String foreignExplanation, String englishExplanation) {
+    Node insert(Node node, String key, String englishSaying, String foreignExplanation, String englishExplanation) {
         if (node == null)
-            return new Node(key, foreignSaying, englishSaying, foreignExplanation, englishExplanation);
+            return new Node(key, englishSaying, foreignExplanation, englishExplanation);
 
         if (key.compareTo(node.key) < 0)
-            node.left = insert(node.left, key, foreignSaying, englishSaying, foreignExplanation, englishExplanation);
+            node.left = insert(node.left, key, englishSaying, foreignExplanation, englishExplanation);
         else if (key.compareTo(node.key) > 0)
-            node.right = insert(node.right, key, foreignSaying, englishSaying, foreignExplanation, englishExplanation);
+            node.right = insert(node.right, key, englishSaying, foreignExplanation, englishExplanation);
         else // Duplicate keys not allowed
             return node;
 
@@ -87,34 +88,160 @@ class AVLTree {
         return node;
     }
 
-    void preOrder(Node node) {
-        if (node != null) {
-            System.out.print(node.key + " ");
-            preOrder(node.left);
-            preOrder(node.right);
-        }
+    void inOrder(Node node) {
+        if (node == null)
+            return;
+
+        // Traverse the left subtree
+        inOrder(node.left);
+
+        // Visit the current node
+        System.out.print(node.key + " -> ");
+
+        // Traverse the right subtree
+        inOrder(node.right);
     }
 
-    Node find(Node node, String key) {
+    Node member(Node node, String key) {
         // Base Cases: node is null or key is present at node
         if (node == null || node.key.equals(key)) {
             if (node != null) {
-                System.out.println("Found: " + node.englishSaying);
+                System.out.println("\nFinding key :");
+                System.out.println("Found: " + key + "\nEnglish Saying: " + node.englishSaying + "\nHawaiian Explanation: " + node.foreignExplanation + "\nEnglish Explanation: " + node.englishExplanation);
             } else {
+                System.out.println("\nFinding key :");
                 System.out.println("Not Found");
             }
             return node;
         }
         // Key is greater than node's key
         if (node.key.compareTo(key) < 0) {
-            return find(node.right, key);
+            return member(node.right, key);
         }
         // Key is smaller than node's key
-        return find(node.left, key);
+        return member(node.left, key);
     }
 
-    // Wrapper function for search
-    Node find(String key) {
-        return find(root, key);
+    void first(Node node) {
+        if (node.left != null) {
+            first(node.left);
+        } else {
+            System.out.println("Found: " + node.key + "\nEnglish Saying: " + node.englishSaying + "\nHawaiian Explanation: " + node.foreignExplanation + "\nEnglish Explanation: " + node.englishExplanation);
+        }
     }
+
+    void last(Node node) {
+        if (node.right != null) {
+            last(node.right);
+        } else {
+            System.out.println("Found: " + node.key + "\nEnglish Saying: " + node.englishSaying + "\nHawaiian Explanation: " + node.foreignExplanation + "\nEnglish Explanation: " + node.englishExplanation);
+        }
+    }
+
+    Node predecessor(Node node, String key, Node[] predecessor) {
+        if (node == null)
+            return null;
+
+        // If key is found, find predecessor in left subtree
+        if (node.key.equals(key)) {
+            Node current = node.left;
+            while (current != null && current.right != null) {
+                current = current.right;
+            }
+            predecessor[0] = current;
+            System.out.println("Found: " + current.key + "\nEnglish Saying: " + current.englishSaying + "\nHawaiian Explanation: " + current.foreignExplanation + "\nEnglish Explanation: " + current.englishExplanation);
+            return node;
+        }
+
+        // If key is smaller than node's key, go left
+        if (key.compareTo(node.key) < 0)
+            return predecessor(node.left, key, predecessor);
+
+        // If key is greater than node's key, go right
+        predecessor[0] = node;
+        return predecessor(node.right, key, predecessor);
+    }
+
+    // Wrapper method to search for a key and find its predecessor
+    Node predecessor(String key) {
+        Node[] predecessor = new Node[1];
+        return predecessor(root, key, predecessor);
+    }
+
+    Node successor(Node node, String key, Node[] successor) {
+        if (node == null)
+            return null;
+
+        // If key is found, find successor in left subtree
+        if (node.key.equals(key)) {
+            Node current = node.right;
+            while (current != null && current.left != null) {
+                current = current.left;
+            }
+            successor[0] = current;
+            System.out.println("Found: " + current.key + "\nEnglish Saying: " + current.englishSaying + "\nHawaiian Explanation: " + current.foreignExplanation + "\nEnglish Explanation: " + current.englishExplanation);
+            return node;
+        }
+
+        // If key is smaller than node's key, go left
+        if (key.compareTo(node.key) < 0)
+            return successor(node.left, key, successor);
+
+        // If key is greater than node's key, go right
+        successor[0] = node;
+        return successor(node.right, key, successor);
+    }
+
+    // Wrapper method to search for a key and find its predecessor
+    Node successor(String key) {
+        Node[] successor = new Node[1];
+        return successor(root, key, successor);
+    }
+
+    void meHua(Node node, String key) {
+        if (node == null) {
+            return;
+        }
+
+        // Visit the current node
+        if (node.key.contains(key)) {
+            System.out.print(node.key + "\n");
+        }
+
+        // Traverse the left subtree
+
+        meHua(node.left, key);
+
+        // Traverse the right subtree
+        meHua(node.right, key);
+    }
+
+    void meHua(String key) {
+        meHua(root, key);
+    }
+
+    void withWord(Node node, String key) {
+        if (node == null) {
+            return;
+        }
+
+        // Visit the current node
+        if (node.englishSaying.contains(key)) {
+            System.out.print(node.englishSaying + "\n");
+        }
+
+        // Traverse the left subtree
+
+        withWord(node.left, key);
+
+        // Traverse the right subtree
+        withWord(node.right, key);
+    }
+
+    void withWord(String key) {
+        withWord(root, key);
+    }
+
+
 }
+
